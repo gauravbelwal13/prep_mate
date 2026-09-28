@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: prep_mate_postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: prep_mate
+      POSTGRES_USER: prep_mate
+      POSTGRES_PASSWORD: prep_mate_dev_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U prep_mate -d prep_mate"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
